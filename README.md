@@ -1,32 +1,42 @@
 # Task Pilot - AI-Powered Task Management 🚀
 
-Task Pilot is an intelligent, autonomous project management tool built for modern teams. It features a built-in AI Agent (powered by Groq & Qwen) that can take high-level goals and automatically break them down into structured, prioritized tasks on your Kanban board.
-
 🔗 **Live Demo:** [https://task-pilot-93yl.onrender.com](https://task-pilot-93yl.onrender.com)
 
-## 🌟 Hackathon Features (Problem Statement Matched)
+## 📌 Problem/Task Chosen
+We chose to build an **Agent capable of Reasoning, Planning, and Execution**. The challenge was to create an AI that can maintain state and context across a workflow. Task Pilot solves this by acting as an autonomous Project Manager—taking high-level user goals, reasoning about the required steps, and automatically executing database actions to generate prioritized Kanban tasks.
 
-1. **Reasoning & Planning**: The AI agent analyzes your input goals and uses deterministic reasoning (via Zod schemas) to break them down into actionable steps with assigned priority levels.
-2. **Tool Use & Execution**: The agent automatically executes server actions to push the generated tasks directly into your live SQLite database.
-3. **State & Context Maintenance**: A real-time Drag & Drop Kanban board ensures task states (To Do, In Progress, Done) are seamlessly maintained and instantly synced across the UI.
-4. **Autonomous AI Scheduler**: Includes a cron-style Scheduler Panel that lets you schedule the AI to automatically run and generate tasks on a Daily, Weekly, or Monthly interval.
+## 🏗️ System Architecture & Workflow Diagram
 
-## 💻 Tech Stack
-- **Frontend**: Next.js 14 (App Router), React, Tailwind CSS, Lucide Icons, DnD-Kit (for Drag & Drop)
-- **Backend**: Next.js Server Actions & API Routes
-- **Database**: Prisma ORM, SQLite
-- **AI Integration**: Vercel AI SDK, Groq API (`qwen-2.5-32b`)
-- **Authentication**: NextAuth.js (Credentials Provider)
+```mermaid
+graph TD
+    A[User] -->|Inputs Goal e.g., 'Build landing page'| B(Next.js Frontend)
+    B -->|Calls Server Action| C{AI Agent via Groq LPU}
+    C -->|Zod Schema Reasoning| D[Structured Task JSON]
+    D -->|Executes DB Actions| E[(SQLite Database via Prisma)]
+    E -->|State Update| F[Kanban Board UI]
+    
+    G[Cron Scheduler] -.->|Triggers Daily/Weekly| C
+```
 
-## 🚀 Getting Started Locally
+## 🎯 Sample Input / Output
+
+**User Input (Goal):** 
+> "Set up authentication for my Next.js app"
+
+**AI Agent Output (Executed directly into Kanban Board):**
+1. **Task:** "Install NextAuth & Prisma Adapter" *(Priority: HIGH)*
+2. **Task:** "Configure Credentials Provider" *(Priority: HIGH)*
+3. **Task:** "Create Login/Register UI pages" *(Priority: MEDIUM)*
+4. **Task:** "Protect Dashboard Routes with Middleware" *(Priority: LOW)*
+
+## 🚀 Setup/Run Instructions
 
 1. **Clone the repository and install dependencies:**
    ```bash
    npm install
    ```
 
-2. **Set up Environment Variables:**
-   Create a `.env` file in the root directory and add:
+2. **Set up Environment Variables (`.env`):**
    ```env
    DATABASE_URL="file:./dev.db"
    NEXTAUTH_SECRET="your-super-secret-key-here"
@@ -50,9 +60,11 @@ Task Pilot is an intelligent, autonomous project management tool built for moder
    - **Email**: `admin@detask.com`
    - **Password**: `password123`
 
----
+## 💻 Tech Stack
+- **Frontend**: Next.js 14, Tailwind CSS, DnD-Kit
+- **Backend & DB**: Next.js Server Actions, Prisma ORM, SQLite
+- **AI Integration**: Vercel AI SDK, Groq API (`qwen-2.5-32b`)
 
-### 👨‍💻 Author
+---
 **Made by Bishnu Kumar Sardar**  
 *Full Stack Developer* | Cambridge Institute of Technology  
-*Built with ❤️ for the AI Agent Hackathon.*
