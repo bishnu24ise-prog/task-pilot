@@ -20,10 +20,10 @@ export default async function TeamPage() {
   const members = await getTeamMembers();
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden bg-gray-50 dark:bg-gray-900">
-      <header className="border-b px-6 py-4 flex justify-between items-center bg-white dark:bg-gray-950">
+    <div className="flex flex-col h-screen overflow-hidden" style={{ background: "#080808", color: "white" }}>
+      <header className="px-6 py-4 flex justify-between items-center" style={{ background: "#111111", borderBottom: "1px solid rgba(255,255,255,0.07)" }}>
         <div>
-          <h1 className="text-xl font-bold">Team Management</h1>
+          <h1 className="text-xl font-bold text-white">Team Management</h1>
           <p className="text-sm text-gray-500">Manage your workspace members and roles.</p>
         </div>
       </header>
