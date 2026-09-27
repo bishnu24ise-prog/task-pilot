@@ -50,6 +50,9 @@ export function TaskDetailsDialog({
     try {
       await addComment(task.id, commentText, projectId);
       setCommentText("");
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new CustomEvent("ai-tasks-created"));
+      }
     } catch (err) {
       console.error("Failed to add comment", err);
     } finally {
@@ -63,6 +66,9 @@ export function TaskDetailsDialog({
     try {
       await deleteTask(task.id, projectId);
       setOpen(false);
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new CustomEvent("ai-tasks-created"));
+      }
     } catch (err) {
       console.error("Failed to delete task", err);
     } finally {

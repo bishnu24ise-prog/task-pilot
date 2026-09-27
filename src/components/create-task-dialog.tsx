@@ -24,6 +24,9 @@ export function CreateTaskDialog({ projectId, canCreate }: { projectId: string; 
       setDescription("");
       setPriority("MEDIUM");
       toast.add({ title: "Task created" });
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new CustomEvent("ai-tasks-created"));
+      }
     } catch (error: unknown) {
       toast.add({ type: "error", title: "Error", description: error instanceof Error ? error.message : "Failed to create task" });
     } finally {
