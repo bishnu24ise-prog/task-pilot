@@ -18,14 +18,14 @@ export function CreateTaskDialog({ projectId, canCreate }: { projectId: string; 
     e.preventDefault();
     setIsLoading(true);
     try {
-      await createTask(projectId, title, description, priority);
+      const taskObj = await createTask(projectId, title, description, priority);
       setOpen(false);
       setTitle("");
       setDescription("");
       setPriority("MEDIUM");
       toast.add({ title: "Task created" });
       if (typeof window !== "undefined") {
-        window.dispatchEvent(new CustomEvent("ai-tasks-created"));
+        window.dispatchEvent(new CustomEvent("manual-task-created", { detail: taskObj }));
       }
     } catch (error: unknown) {
       toast.add({ type: "error", title: "Error", description: error instanceof Error ? error.message : "Failed to create task" });

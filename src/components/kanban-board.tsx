@@ -47,6 +47,17 @@ export function KanbanBoard({ projectId, canCreateTask }: { projectId: string; c
     const handleAiTasksCreated = () => loadTasks();
     window.addEventListener("ai-tasks-created", handleAiTasksCreated);
 
+    // Listen for local manual UI events
+    const handleTaskCreated = (e: any) => setTasks(p => [e.detail, ...p]);
+    const handleTaskDeleted = (e: any) => setTasks(p => p.filter(t => t.id !== e.detail.taskId));
+    const handleCommentAdded = (e: any) => {
+      setTasks(p => p.map(t => t.id === e.detail.taskId ? { ...t, comments: [...(t.comments || []), e.detail.comment] } : t));
+    };
+
+    window.addEventListener("manual-task-created", handleTaskCreated);
+    window.addEventListener("manual-task-deleted", handleTaskDeleted);
+    window.addEventListener("manual-comment-added", handleCommentAdded);
+
     if (process.env.NEXT_PUBLIC_PUSHER_KEY && process.env.NEXT_PUBLIC_PUSHER_CLUSTER) {
       const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY, {
         cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER,
@@ -62,11 +73,17 @@ export function KanbanBoard({ projectId, canCreateTask }: { projectId: string; c
 
       return () => {
         window.removeEventListener("ai-tasks-created", handleAiTasksCreated);
+        window.removeEventListener("manual-task-created", handleTaskCreated);
+        window.removeEventListener("manual-task-deleted", handleTaskDeleted);
+        window.removeEventListener("manual-comment-added", handleCommentAdded);
         pusher.unsubscribe(`project-${projectId}`);
       };
     } else {
       return () => {
         window.removeEventListener("ai-tasks-created", handleAiTasksCreated);
+        window.removeEventListener("manual-task-created", handleTaskCreated);
+        window.removeEventListener("manual-task-deleted", handleTaskDeleted);
+        window.removeEventListener("manual-comment-added", handleCommentAdded);
       };
     }
   }, [projectId]);

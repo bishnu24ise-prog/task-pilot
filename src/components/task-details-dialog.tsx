@@ -48,10 +48,10 @@ export function TaskDetailsDialog({
     if (!commentText.trim()) return;
     setIsSubmitting(true);
     try {
-      await addComment(task.id, commentText, projectId);
+      const comment = await addComment(task.id, commentText, projectId);
       setCommentText("");
       if (typeof window !== "undefined") {
-        window.dispatchEvent(new CustomEvent("ai-tasks-created"));
+        window.dispatchEvent(new CustomEvent("manual-comment-added", { detail: { taskId: task.id, comment } }));
       }
     } catch (err) {
       console.error("Failed to add comment", err);
@@ -67,7 +67,7 @@ export function TaskDetailsDialog({
       await deleteTask(task.id, projectId);
       setOpen(false);
       if (typeof window !== "undefined") {
-        window.dispatchEvent(new CustomEvent("ai-tasks-created"));
+        window.dispatchEvent(new CustomEvent("manual-task-deleted", { detail: { taskId: task.id } }));
       }
     } catch (err) {
       console.error("Failed to delete task", err);
