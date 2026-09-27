@@ -47,22 +47,28 @@ export function KanbanBoard({ projectId, canCreateTask }: { projectId: string; c
     const handleAiTasksCreated = () => loadTasks();
     window.addEventListener("ai-tasks-created", handleAiTasksCreated);
 
-    const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY!, {
-      cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,
-    });
+    if (process.env.NEXT_PUBLIC_PUSHER_KEY && process.env.NEXT_PUBLIC_PUSHER_CLUSTER) {
+      const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY, {
+        cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER,
+      });
 
-    const channel = pusher.subscribe(`project-${projectId}`);
-    channel.bind("task-updated",  (t: typeof tasks[0])                      => setTasks(p => p.map(x => x.id === t.id ? { ...x, ...t } : x)));
-    channel.bind("task-created",  (t: typeof tasks[0])                      => setTasks(p => [t, ...p]));
-    channel.bind("task-deleted",  ({ taskId }: { taskId: string })           => setTasks(p => p.filter(x => x.id !== taskId)));
-    channel.bind("comment-added", ({ taskId, comment }: { taskId: string; comment: { id: string } }) =>
-      setTasks(p => p.map(t => t.id === taskId ? { ...t, comments: [...(t.comments || []), comment] } : t))
-    );
+      const channel = pusher.subscribe(`project-${projectId}`);
+      channel.bind("task-updated",  (t: typeof tasks[0])                      => setTasks(p => p.map(x => x.id === t.id ? { ...x, ...t } : x)));
+      channel.bind("task-created",  (t: typeof tasks[0])                      => setTasks(p => [t, ...p]));
+      channel.bind("task-deleted",  ({ taskId }: { taskId: string })           => setTasks(p => p.filter(x => x.id !== taskId)));
+      channel.bind("comment-added", ({ taskId, comment }: { taskId: string; comment: { id: string } }) =>
+        setTasks(p => p.map(t => t.id === taskId ? { ...t, comments: [...(t.comments || []), comment] } : t))
+      );
 
-    return () => {
-      window.removeEventListener("ai-tasks-created", handleAiTasksCreated);
-      pusher.unsubscribe(`project-${projectId}`);
-    };
+      return () => {
+        window.removeEventListener("ai-tasks-created", handleAiTasksCreated);
+        pusher.unsubscribe(`project-${projectId}`);
+      };
+    } else {
+      return () => {
+        window.removeEventListener("ai-tasks-created", handleAiTasksCreated);
+      };
+    }
   }, [projectId]);
 
   const onDragEnd = async (result: DropResult) => {
