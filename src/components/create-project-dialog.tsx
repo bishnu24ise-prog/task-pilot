@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { createProject } from "@/app/actions/project";
 import { toast } from "@/components/ui/toast";
 import { FolderPlus, X, Loader2 } from "lucide-react";
@@ -19,6 +20,11 @@ export function CreateProjectDialog({
   const [description, setDescription] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   if (!canCreate) return null;
 
@@ -82,8 +88,7 @@ export function CreateProjectDialog({
         New Project
       </button>
 
-      {open && typeof document !== "undefined" &&
-        require("react-dom").createPortal(
+      {mounted && open && createPortal(
           <div
             className="fixed inset-0 z-[99999] flex items-center justify-center p-4"
             style={{ background: "rgba(0,0,0,0.75)", backdropFilter: "blur(8px)" }}

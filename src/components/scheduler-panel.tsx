@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { Calendar, Play, Trash2, Pause, Clock, Zap, Plus, X } from "lucide-react";
 
 interface ScheduledGoal {
@@ -27,6 +28,11 @@ export function SchedulerPanel({ projectId }: { projectId: string }) {
   const [frequency, setFrequency] = useState("WEEKLY");
   const [loading, setLoading] = useState(false);
   const [runningId, setRunningId] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const loadGoals = async () => {
     const res = await fetch(`/api/schedule?projectId=${projectId}`);
@@ -100,8 +106,7 @@ export function SchedulerPanel({ projectId }: { projectId: string }) {
       </button>
 
       {/* Panel overlay - Rendered in a Portal to avoid clipping */}
-      {open && typeof document !== "undefined" &&
-        require("react-dom").createPortal(
+      {mounted && open && createPortal(
           <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4" style={{ background: "rgba(0,0,0,0.7)", backdropFilter: "blur(8px)" }}>
             <div className="w-full max-w-xl rounded-2xl overflow-hidden shadow-2xl relative" style={{ background: "#0f0f0f", border: "1px solid rgba(255,255,255,0.1)" }}>
               
