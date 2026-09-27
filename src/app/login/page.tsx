@@ -214,7 +214,7 @@ export default function LoginPage() {
           <div className="p-4 rounded-xl mb-6"
             style={{ background: "rgba(124,58,237,0.08)", border: "1px solid rgba(124,58,237,0.2)" }}>
             <p className="text-xs font-semibold text-purple-400 mb-2">Demo credentials</p>
-            <p className="text-xs text-gray-400"><span className="text-gray-300">Email:</span> admin@taskpilot.com</p>
+            <p className="text-xs text-gray-400"><span className="text-gray-300">Email:</span> admin@detask.com</p>
             <p className="text-xs text-gray-400"><span className="text-gray-300">Password:</span> password123</p>
           </div>
 
