@@ -2,6 +2,8 @@
 
 Task Pilot is an intelligent, autonomous project management tool built for modern teams. It features a built-in AI Agent (powered by Groq & Qwen) that can take high-level goals and automatically break them down into structured, prioritized tasks on your Kanban board.
 
+🔗 **Live Demo:** [https://task-pilot-93yl.onrender.com](https://task-pilot-93yl.onrender.com)
+
 ## 🌟 Hackathon Features (Problem Statement Matched)
 
 1. **Reasoning & Planning**: The AI agent analyzes your input goals and uses deterministic reasoning (via Zod schemas) to break them down into actionable steps with assigned priority levels.
@@ -48,9 +50,9 @@ Task Pilot is an intelligent, autonomous project management tool built for moder
    - **Email**: `admin@detask.com`
    - **Password**: `password123`
 
-## 🌍 Deployment
-
-To deploy this project easily while keeping the SQLite database, we recommend deploying to **Render.com** as a Web Service with a Persistent Disk mounted at `/opt/render/project/src/prisma`.
-
 ---
+
+### 👨‍💻 Author
+**Made by Bishnu Kumar Sardar**  
+*Full Stack Developer* | Cambridge Institute of Technology  
 *Built with ❤️ for the AI Agent Hackathon.*
