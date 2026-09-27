@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { hasPermission } from "@/lib/permissions";
+import { revalidatePath } from "next/cache";
 import Pusher from "pusher";
 
 const pusher = new Pusher({
@@ -44,6 +45,7 @@ export async function updateTaskStatus(taskId: string, newStatus: string, projec
     console.error("Pusher error:", error);
   }
 
+  revalidatePath("/dashboard");
   return task;
 }
 
@@ -81,6 +83,7 @@ export async function createTask(projectId: string, title: string, description?:
     console.error("Pusher error:", error);
   }
 
+  revalidatePath("/dashboard");
   return task;
 }
 
@@ -105,6 +108,7 @@ export async function addComment(taskId: string, content: string, projectId: str
     console.error("Pusher error:", error);
   }
 
+  revalidatePath("/dashboard");
   return comment;
 }
 
@@ -123,4 +127,6 @@ export async function deleteTask(taskId: string, projectId: string) {
   } catch (error) {
     console.error("Pusher error:", error);
   }
+  
+  revalidatePath("/dashboard");
 }
